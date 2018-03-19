@@ -1,39 +1,63 @@
 package com.netaporter.shop;
 
+import java.io.IOException;
+
 public class NetAPorterShop {
 
+    private ProductList productList;
+    private Basket basket;
+
+    public NetAPorterShop() {
+        basket = new Basket();
+    }
+
     public void loadProducts() {
-        // TODO Exercise 1a - Parsing the product-data.csv data file
-        System.out.println("Load Products Not Implemented");
+        ProductParser parser = new ProductParser();
+
+        try {
+            this.productList = parser.parse("product-data.csv");
+        } catch (IOException | NumberFormatException ex) {
+            System.out.println("Could not load products from file");
+            System.exit(1);
+        }
     }
 
     public void listProducts() {
-        // TODO Exercise 1b - Listing products
-        System.out.println("List Products Not Implemented");
+        System.out.println(productList);
     }
 
     /**
      * Add a product to the Basket
      */
-    public void addProductToBasket() {
-        // TODO Exercise 2a - feature to add Products to the basket
-        System.out.println("Add Product Not Implemented");
+    public void addProductToBasket(int productId) {
+        Product product = productList.get(productId);
+        if (product == null) {
+            System.out.println("Invalid product id " + productId);
+        } else {
+            basket.addProduct(product);
+        }
     }
 
     /**
      * Remove a product from the Basket
      */
-    public void removeProductFromBasket() {
-        // TODO Exercise 2b - feature to remove Products from the basket
-        System.out.println("Remove Product Not Implemented");
+    public void removeProductFromBasket(int productId) {
+        Product product = productList.get(productId);
+        if (product == null) {
+            System.out.println("Invalid product id " + productId);
+        } else {
+            boolean success = basket.removeProduct(product);
+            if (!success) {
+                System.out.println(String.format("Product %d not in basket", productId));
+            }
+        }
     }
 
     /**
      * Return the total value of the products in the basket
      */
     public void getTotal() {
-        // TODO Exercise 2c - feature to show the total value of Products in the basket
-        System.out.println("Get Total Not Implemented");
+        System.out.println("Basket value: £" + basket.getTotal());
     }
 
 }

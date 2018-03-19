@@ -2,6 +2,7 @@ package com.netaporter.main;
 
 import com.netaporter.shop.NetAPorterShop;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -29,10 +30,18 @@ public class Application {
             String inputValue = scanner.next();
 
             if (inputValue.startsWith("add")) {
-                shop.addProductToBasket();
+                try {
+                    shop.addProductToBasket(scanner.nextInt());
+                } catch (InputMismatchException ex) {
+                    System.out.println("Invalid input. ProductId must be an integer");
+                }
 
             } else if (inputValue.startsWith("remove")) {
-                shop.removeProductFromBasket();
+                try {
+                    shop.removeProductFromBasket(scanner.nextInt());
+                } catch (InputMismatchException ex) {
+                    System.out.println("Invalid input. ProductId must be an integer");
+                }
 
             } else if (inputValue.startsWith("list")) {
                 shop.listProducts();
